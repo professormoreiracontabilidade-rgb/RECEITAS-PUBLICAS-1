@@ -31,7 +31,7 @@ button:active{transform:scale(.98)}
   </div>
 
   <section class="palco" id="palco" aria-label="Carrossel de imagens">
-    <img id="card" src="imagens/card-01.webp" alt="Imagem 1 de 45" decoding="async" fetchpriority="high">
+    <img id="card" src="card-01.webp" alt="Imagem 1 de 45" decoding="async" fetchpriority="high">
   </section>
 
   <nav class="controles" aria-label="Controles do carrossel">
@@ -43,7 +43,7 @@ button:active{transform:scale(.98)}
 </main>
 
 <script>
-const imagens = ["imagens/card-01.webp", "imagens/card-02.webp", "imagens/card-03.webp", "imagens/card-04.webp", "imagens/card-05.webp", "imagens/card-06.webp", "imagens/card-07.webp", "imagens/card-08.webp", "imagens/card-09.webp", "imagens/card-10.webp", "imagens/card-11.webp", "imagens/card-12.webp", "imagens/card-13.webp", "imagens/card-14.webp", "imagens/card-15.webp", "imagens/card-16.webp", "imagens/card-17.webp", "imagens/card-18.webp", "imagens/card-19.webp", "imagens/card-20.webp", "imagens/card-21.webp", "imagens/card-22.webp", "imagens/card-23.webp", "imagens/card-24.webp", "imagens/card-25.webp", "imagens/card-26.webp", "imagens/card-27.webp", "imagens/card-28.webp", "imagens/card-29.webp", "imagens/card-30.webp", "imagens/card-31.webp", "imagens/card-32.webp", "imagens/card-33.webp", "imagens/card-34.webp", "imagens/card-35.webp", "imagens/card-36.webp", "imagens/card-37.webp", "imagens/card-38.webp", "imagens/card-39.webp", "imagens/card-40.webp", "imagens/card-41.webp", "imagens/card-42.webp", "imagens/card-43.webp", "imagens/card-44.webp", "imagens/card-45.webp"];
+const imagens = Array.from({length: 45}, (_, i) => `card-${String(i + 1).padStart(2, "0")}.webp`);
 let atual = 0;
 const card = document.getElementById("card");
 const contador = document.getElementById("contador");

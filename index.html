@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07599b">
+<title>Receitas Públicas | Professor Moreira</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#dff3ff;font-family:Arial,Helvetica,sans-serif;color:#07345c}
+body{min-height:100dvh;display:flex;align-items:center;justify-content:center}
+.app{width:min(100%,560px);min-height:100dvh;padding:10px 10px calc(12px + env(safe-area-inset-bottom));display:flex;flex-direction:column;justify-content:center}
+.topo{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:2px 4px 9px}
+.titulo{font-weight:800;font-size:18px}
+#contador{font-weight:800;background:#fff;border-radius:999px;padding:7px 11px;box-shadow:0 2px 8px #0002}
+.palco{position:relative;width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:pan-y;border-radius:18px;background:#fff;box-shadow:0 5px 20px #0002}
+#card{display:block;width:100%;max-height:80dvh;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.controles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-top:10px}
+button{border:0;border-radius:13px;padding:12px 8px;font-size:18px;font-weight:800;color:#fff;background:#07599b;cursor:pointer;box-shadow:0 3px 8px #0002}
+button:active{transform:scale(.98)}
+#reiniciar{background:#c62828;font-size:15px}
+.dica{text-align:center;font-size:12px;opacity:.75;margin-top:7px}
+@media (min-width:700px){.app{min-height:auto} #card{max-height:82vh}}
+</style>
+</head>
+<body>
+<main class="app">
+  <div class="topo">
+    <div class="titulo">Receitas Públicas</div>
+    <div id="contador">1 / 45</div>
+  </div>
+
+  <section class="palco" id="palco" aria-label="Carrossel de imagens">
+    <img id="card" src="imagens/card-01.webp" alt="Imagem 1 de 45" decoding="async" fetchpriority="high">
+  </section>
+
+  <nav class="controles" aria-label="Controles do carrossel">
+    <button id="voltar" aria-label="Imagem anterior">←</button>
+    <button id="reiniciar">↺ Reiniciar</button>
+    <button id="avancar" aria-label="Próxima imagem">→</button>
+  </nav>
+  <div class="dica">Deslize para a esquerda ou direita no celular.</div>
+</main>
+
+<script>
+const imagens = ["imagens/card-01.webp", "imagens/card-02.webp", "imagens/card-03.webp", "imagens/card-04.webp", "imagens/card-05.webp", "imagens/card-06.webp", "imagens/card-07.webp", "imagens/card-08.webp", "imagens/card-09.webp", "imagens/card-10.webp", "imagens/card-11.webp", "imagens/card-12.webp", "imagens/card-13.webp", "imagens/card-14.webp", "imagens/card-15.webp", "imagens/card-16.webp", "imagens/card-17.webp", "imagens/card-18.webp", "imagens/card-19.webp", "imagens/card-20.webp", "imagens/card-21.webp", "imagens/card-22.webp", "imagens/card-23.webp", "imagens/card-24.webp", "imagens/card-25.webp", "imagens/card-26.webp", "imagens/card-27.webp", "imagens/card-28.webp", "imagens/card-29.webp", "imagens/card-30.webp", "imagens/card-31.webp", "imagens/card-32.webp", "imagens/card-33.webp", "imagens/card-34.webp", "imagens/card-35.webp", "imagens/card-36.webp", "imagens/card-37.webp", "imagens/card-38.webp", "imagens/card-39.webp", "imagens/card-40.webp", "imagens/card-41.webp", "imagens/card-42.webp", "imagens/card-43.webp", "imagens/card-44.webp", "imagens/card-45.webp"];
+let atual = 0;
+const card = document.getElementById("card");
+const contador = document.getElementById("contador");
+const palco = document.getElementById("palco");
+
+function preload(i) {
+  if (i >= 0 && i < imagens.length) {
+    const img = new Image();
+    img.src = imagens[i];
+  }
+}
+
+function mostrar(i) {
+  atual = (i + imagens.length) % imagens.length;
+  card.src = imagens[atual];
+  card.alt = `Imagem ${atual + 1} de ${imagens.length}`;
+  contador.textContent = `${atual + 1} / ${imagens.length}`;
+  preload(atual + 1);
+  preload(atual - 1);
+}
+
+document.getElementById("avancar").onclick = () => mostrar(atual + 1);
+document.getElementById("voltar").onclick = () => mostrar(atual - 1);
+document.getElementById("reiniciar").onclick = () => mostrar(0);
+
+let inicioX = 0, inicioY = 0;
+palco.addEventListener("touchstart", e => {
+  const t = e.changedTouches[0];
+  inicioX = t.clientX; inicioY = t.clientY;
+}, {passive:true});
+
+palco.addEventListener("touchend", e => {
+  const t = e.changedTouches[0];
+  const dx = t.clientX - inicioX;
+  const dy = t.clientY - inicioY;
+  if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+    dx < 0 ? mostrar(atual + 1) : mostrar(atual - 1);
+  }
+}, {passive:true});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight") mostrar(atual + 1);
+  if (e.key === "ArrowLeft") mostrar(atual - 1);
+  if (e.key === "Home") mostrar(0);
+});
+
+preload(1);
+</script>
+</body>
+</html>
